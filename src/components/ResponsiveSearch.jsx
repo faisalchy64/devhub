@@ -1,18 +1,16 @@
-export default function Search({ bool }) {
+"use client";
+import { useState } from "react";
+import Search from "./Search";
+
+export default function ResponsiveSearch() {
+    const [show, setShow] = useState(false);
+
     return (
-        <form
-            className={`${
-                bool
-                    ? "hidden md:flex"
-                    : "w-4/5 flex bg-white absolute top-[115%] left-1/2 -translate-x-1/2 z-50"
-            } items-center border-2 border-gray-700 rounded overflow-hidden`}
-        >
-            <input
-                type="text"
-                placeholder="Search..."
-                className="w-full px-2.5 py-1.5 outline-none"
-            />
-            <button type="submit" className="align-middle px-2.5 py-1.5">
+        <div className="block md:hidden">
+            <button
+                className="align-middle px-2.5 py-1.5"
+                onClick={() => setShow(!show)}
+            >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -28,6 +26,8 @@ export default function Search({ bool }) {
                     />
                 </svg>
             </button>
-        </form>
+
+            {show && <Search />}
+        </div>
     );
 }
