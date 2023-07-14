@@ -24,7 +24,7 @@ export default function Navbar() {
                         Login
                     </Link>
                     <Link
-                        href="/login"
+                        href="/signup"
                         className="font-semibold text-blue-500 hover:text-white hover:bg-blue-500 px-2.5 py-1.5 border-2 border-blue-500 rounded"
                     >
                         Create account
