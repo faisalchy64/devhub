@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 export default function Signup() {
     const [show, setShow] = useState(false);
@@ -11,8 +12,29 @@ export default function Signup() {
         handleSubmit,
         reset,
     } = useForm();
-    const onSubmit = (data) => {
-        console.table(data);
+    const onSubmit = async (data) => {
+        try {
+            const response = await fetch(
+                "http://localhost:3000/api/auth/signup",
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data),
+                }
+            );
+
+            const result = await response.json();
+
+            if (result.message) {
+                toast.success(result.message);
+            }
+            if (result.error) {
+                toast.error(result.error);
+            }
+        } catch (error) {
+            toast.error("There was an error.");
+        }
+
         reset();
     };
 
