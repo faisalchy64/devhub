@@ -2,6 +2,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
+import { signIn } from "next-auth/react";
+import { toast } from "react-hot-toast";
 
 export default function Login() {
     const [show, setShow] = useState(false);
@@ -11,8 +13,18 @@ export default function Login() {
         handleSubmit,
         reset,
     } = useForm();
-    const onSubmit = (data) => {
-        console.table(data);
+    const onSubmit = async (data) => {
+        const response = await signIn("credentials", {
+            ...data,
+            redirect: false,
+        });
+
+        if (response && response.error) {
+            toast.error(response.error);
+        } else {
+            toast.success("Welcome back.");
+        }
+
         reset();
     };
 
