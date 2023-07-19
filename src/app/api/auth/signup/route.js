@@ -14,6 +14,13 @@ export const POST = async (req) => {
             { status: 201 }
         );
     } catch (error) {
-        return NextResponse.json(error.message, { status: 500 });
+        if (error.message.includes("duplicate")) {
+            return NextResponse.json(
+                { error: "Username and email should be unique." },
+                { status: 500 }
+            );
+        } else {
+            return NextResponse.json({ error: error.message }, { status: 500 });
+        }
     }
 };
