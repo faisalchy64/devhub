@@ -1,13 +1,14 @@
 "use client";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { toast } from "react-hot-toast";
 
 export default function Write() {
     const router = useRouter();
     const { data, status } = useSession();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         const post = {
@@ -18,6 +19,25 @@ export default function Write() {
             author: data.user.name,
             username: data.user.username,
         };
+
+        try {
+            const response = await fetch("http://localhost:3000/api/post", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(post),
+            });
+
+            const result = await response.json();
+
+            if (result.message) {
+                toast.success(result.message);
+            }
+            if (result.error) {
+                toast.error(result.error);
+            }
+        } catch (error) {
+            toast.error("There was an error.");
+        }
 
         e.target.reset();
     };
