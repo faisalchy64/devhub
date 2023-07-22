@@ -3,7 +3,6 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import connect from "@/common/db";
 import User from "@/models/userModel";
-import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 
 export const authOptions = {
@@ -29,7 +28,9 @@ export const authOptions = {
                         );
 
                         if (compared) {
-                            return user;
+                            const { name, username, email } = user;
+
+                            return { name, username, email };
                         } else {
                             throw new Error("Email or password wrong.");
                         }
@@ -47,6 +48,15 @@ export const authOptions = {
     },
     jwt: {
         maxAge: 60 * 60,
+    },
+    callbacks: {
+        async jwt({ token, user }) {
+            return { ...token, ...user };
+        },
+        async session({ session, token }) {
+            session.user.username = token.username;
+            return session;
+        },
     },
 };
 
