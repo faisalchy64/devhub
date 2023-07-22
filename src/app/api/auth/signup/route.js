@@ -4,8 +4,8 @@ import User from "@/models/userModel";
 import bcrypt from "bcrypt";
 
 export const POST = async (req) => {
-    const data = await req.json();
     try {
+        const data = await req.json();
         await connect();
         const hashed = await bcrypt.hash(data.password, 10);
         const user = await User.create({ ...data, password: hashed });
