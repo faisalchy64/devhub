@@ -15,8 +15,8 @@ export default function Write() {
             image: e.target.image.value,
             tag: e.target.tag.value,
             body: e.target.body.value,
-            name: data.user.name,
-            author: data.user.username,
+            author: data.user.name,
+            username: data.user.username,
         };
 
         e.target.reset();
