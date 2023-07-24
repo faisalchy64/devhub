@@ -1,16 +1,32 @@
 import Image from "next/image";
 import Link from "next/link";
+import moment from "moment";
 import Post from "@/components/Post";
 
-export default function page() {
+const getPost = async (id) => {
+    try {
+        const response = await fetch(`http://localhost:3000/api/post/${id}`, {
+            cache: "no-cache",
+        });
+
+        return response.json();
+    } catch (error) {
+        throw new Error("There was an error.");
+    }
+};
+
+export default async function page({ params }) {
+    const post = await getPost(params.id);
+    const { _id, title, image, tag, body, author, username, createdAt } = post;
+
     return (
         <section className="w-4/5 mx-auto my-10">
             <h1 className="text-3xl md:text-4xl font-semibold text-gray-700 mb-5">
-                What is Next.js?
+                {title}
             </h1>
             <div className="w-fit flex items-center gap-2.5">
                 <Link
-                    href={`/author`}
+                    href={`/author/${username}`}
                     className="w-fit flex items-center gap-1.5"
                 >
                     <svg
@@ -31,17 +47,19 @@ export default function page() {
                 <div className="text-sm font-semibold">
                     <div className="flex items-center gap-1.5">
                         <Link
-                            href={`/author`}
+                            href={`/author/${username}`}
                             className="w-fit flex items-center gap-1.5"
                         >
-                            <span className="font-semibold text-gray-70 hover:underline">
-                                Shams Karim
+                            <span className="font-semibold capitalize text-gray-700 hover:underline">
+                                {author}
                             </span>
                         </Link>
                         <span className="text-gray-700">.</span>
                         <button className="text-lime-500">Follow</button>
                     </div>
-                    <span className="text-xs text-gray-500">Jun 15, 2023</span>
+                    <span className="text-xs text-gray-500">
+                        {moment(createdAt).format("DD MMM, YYYY")}
+                    </span>
                 </div>
             </div>
 
@@ -99,65 +117,17 @@ export default function page() {
             </div>
 
             <div className="w-full h-40 md:h-[450px] relative">
-                <Image
-                    src={
-                        "https://images.pexels.com/photos/16398261/pexels-photo-16398261/free-photo-of-watermelon-slice-on-wooden-table.jpeg"
-                    }
-                    alt="post image"
-                    fill
-                    priority
-                />
+                <Image src={image} alt="post image" fill priority />
             </div>
-            <p className="text-gray-500 my-10">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui,
-                nemo optio! Odit nemo libero iste veritatis cum similique unde
-                perferendis adipisci reprehenderit totam ratione hic, nihil
-                error ducimus dicta ullam fuga non quo vel rerum dolore
-                inventore consequatur quaerat eum? Deleniti nisi eaque officiis
-                veritatis consequatur accusantium placeat voluptate error animi
-                iure culpa aliquam est unde facilis architecto quibusdam,
-                tempore aspernatur! Possimus architecto, nihil id iste debitis
-                veniam illum libero consectetur vitae optio ipsam voluptates
-                doloremque! Odio explicabo nemo nisi rem placeat eos sint,
-                excepturi officiis temporibus quasi illum cum quia debitis dolor
-                facilis obcaecati ex? Exercitationem laborum excepturi sed
-                quibusdam et molestias dolorem illum officiis ea voluptate, nemo
-                qui? Itaque eligendi eveniet eius facere, maiores voluptatibus.
-                Veniam cumque illum repudiandae reiciendis modi eligendi aliquam
-                obcaecati aspernatur voluptate et quidem accusantium maxime,
-                distinctio ex necessitatibus, minus, nam vel nulla nihil
-                voluptas! Culpa molestias alias magni necessitatibus placeat
-                voluptatum id corrupti laborum, enim dolores recusandae quo
-                architecto atque excepturi vero, maxime deleniti obcaecati.
-                Aspernatur vitae harum quo libero officia perferendis
-                consequuntur atque laboriosam, quia est excepturi minima ex
-                accusantium nostrum facere alias suscipit dolore, esse amet
-                quod? Magnam error hic, pariatur rerum ab officia animi
-                obcaecati quod nulla sequi deleniti cum quaerat tempora dolorem!
-                Provident labore tenetur ut minima, odit deleniti in corrupti
-                sint corporis, accusantium cumque unde animi assumenda dolores
-                aut cum debitis nostrum at, repellendus consequatur velit fuga
-                explicabo. Perspiciatis excepturi dolorem molestiae corrupti,
-                culpa consequuntur veritatis. Numquam a amet accusantium
-                voluptates quia, ex, debitis illum non cumque omnis, eos odio
-                sit at consectetur voluptatum eaque ipsum quam nam. Dolorem,
-                minima voluptas labore voluptatum ad deleniti beatae ut
-                consectetur unde dolores itaque neque ea similique nihil commodi
-                aspernatur natus iure doloribus aliquam impedit hic. Minima
-                provident cumque a, velit nisi aliquam aperiam? Modi, numquam
-                saepe. Quia enim voluptas voluptatum exercitationem excepturi
-                non quis velit, officia quo, corrupti veniam dolore. Similique
-                vero voluptatibus aspernatur nesciunt, corporis magni alias
-                totam quae unde excepturi molestiae necessitatibus consequuntur
-                eum, culpa laudantium, ratione et suscipit animi sint deleniti
-                harum!
-            </p>
+            <pre className="text-gray-500 whitespace-pre-wrap my-10">
+                {body}
+            </pre>
             <hr />
-            <h3 className="text-xl font-semibold text-gray-700 my-5">
-                More from Shams Karim
+            <h3 className="text-xl font-semibold capitalize text-gray-700 my-5">
+                More from {author}
             </h3>
 
-            <div className="flex flex-col gap-5">
+            {/* <div className="flex flex-col gap-5">
                 <Post />
                 <hr />
                 <Post />
@@ -165,7 +135,7 @@ export default function page() {
                 <Post />
                 <hr />
                 <Post />
-            </div>
+            </div> */}
         </section>
     );
 }
