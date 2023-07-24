@@ -1,12 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
+import moment from "moment";
 
-export default function Post() {
+export default function Post({ post }) {
+    const { _id, title, image, tag, body, author, username, createdAt } = post;
+
     return (
-        <article className="flex flex-col-reverse md:flex-row md:items-center gap-5">
+        <article className="xl:w-4/5 flex flex-col-reverse md:flex-row justify-between md:items-center gap-5">
             <div className="flex flex-col gap-1.5">
                 <Link
-                    href={`/author`}
+                    href={`/author/${username}`}
                     className="w-fit flex items-center gap-1.5"
                 >
                     <svg
@@ -24,30 +27,27 @@ export default function Post() {
                         />
                     </svg>
 
-                    <span className="text-xs font-semibold text-gray-700">
-                        Shams Karim
+                    <span className="text-xs font-semibold capitalize text-gray-700">
+                        {author}
                     </span>
                 </Link>
-                <Link href={`/post`} className="flex flex-col gap-1.5">
+                <Link href={`/post/${_id}`} className="flex flex-col gap-1.5">
                     <h3 className="text-lg font-semibold text-gray-700">
-                        What is Next.js
+                        {title}
                     </h3>
-                    <p className="text-sm text-gray-500">
-                        Lorem ipsum dolor sit amet consectetur, adipisicing
-                        elit. Corrupti, sed! Consequuntur earum fuga repudiandae
-                        molestiae ut unde fugit in, voluptatem iusto odio
-                        dolor...
-                    </p>
+                    <pre className="text-sm text-gray-500 whitespace-pre-wrap">
+                        {body.slice(0, 100)}...
+                    </pre>
                 </Link>
                 <div className="flex justify-between items-center gap-0.5">
                     <div className="flex items-center gap-1.5 text-xs text-gray-500">
-                        <span>Jun 15, 2023</span>
+                        <span>{moment(createdAt).format("DD MMM, YYYY")}</span>
                         <span>.</span>
                         <Link
-                            href={`/tag`}
+                            href={`/tag/${tag}`}
                             className="bg-gray-100 hover:bg-gray-200 px-2.5 py-1.5 rounded-lg"
                         >
-                            Programming
+                            {tag}
                         </Link>
                     </div>
                     <button>
@@ -70,13 +70,11 @@ export default function Post() {
             </div>
 
             <Link
-                href={`/post`}
+                href={`/post/${_id}`}
                 className="w-full md:w-80 h-40 flex-shrink-0 relative"
             >
                 <Image
-                    src={
-                        "https://images.pexels.com/photos/16398261/pexels-photo-16398261/free-photo-of-watermelon-slice-on-wooden-table.jpeg"
-                    }
+                    src={image}
                     alt="post image"
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 320px"
