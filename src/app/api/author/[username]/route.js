@@ -1,17 +1,22 @@
 import { NextResponse } from "next/server";
 import connect from "@/common/db";
 import Post from "@/models/postModel";
+import User from "@/models/userModel";
 
 export const GET = async (req, { params }) => {
     try {
         await connect();
-        const posts = await Post.find({ username: params.username });
-        if (posts) {
-            return NextResponse.json(posts);
+        const author = await User.findOne({ username: params.username }).select(
+            ["name", "username", "about", "followers"]
+        );
+
+        if (author) {
+            const posts = await Post.find({ username: author.username });
+            return NextResponse.json({ author, posts });
         }
 
         return NextResponse.json(
-            { message: "Post not found." },
+            { message: "Author not found." },
             { status: 404 }
         );
     } catch (error) {
