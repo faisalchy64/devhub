@@ -20,6 +20,14 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: [true, "Email is required."],
         },
+        about: {
+            type: String,
+            default: "",
+        },
+        followers: {
+            type: Array,
+            default: [],
+        },
     },
     {
         timestamps: true,
