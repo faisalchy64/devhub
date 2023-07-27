@@ -77,6 +77,7 @@ export default function Post({ post }) {
                     src={image}
                     alt="post image"
                     fill
+                    priority
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 320px"
                 />
             </Link>
