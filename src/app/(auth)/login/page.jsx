@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { signIn, useSession } from "next-auth/react";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import Loading from "@/components/Loading";
 
 export default function Login() {
     const [show, setShow] = useState(false);
@@ -39,7 +40,7 @@ export default function Login() {
     }, [router, status]);
 
     if (status === "loading") {
-        return <h1>Loading...</h1>;
+        return <Loading />;
     }
 
     if (status === "unauthenticated") {
