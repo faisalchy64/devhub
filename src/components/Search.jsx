@@ -1,4 +1,17 @@
+"use client";
+import { useRouter } from "next/navigation";
+
 export default function Search({ bool }) {
+    const router = useRouter();
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+
+        if (e.target.search.value) {
+            router.push(`/search/${e.target.search.value.toLowerCase()}`);
+        }
+    };
+
     return (
         <form
             className={`${
@@ -6,9 +19,11 @@ export default function Search({ bool }) {
                     ? "hidden md:flex"
                     : "w-4/5 flex bg-white absolute top-[115%] left-1/2 -translate-x-1/2 z-50"
             } items-center border-2 border-gray-700 rounded overflow-hidden`}
+            onSubmit={handleSearch}
         >
             <input
                 type="text"
+                name="search"
                 placeholder="Search..."
                 className="w-full px-2.5 py-1.5 outline-none"
             />
