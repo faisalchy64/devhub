@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function Tags() {
@@ -55,7 +56,8 @@ export default function Tags() {
 
             <div className="flex flex-wrap items-center gap-3.5 text-sm">
                 {tags.map((tag) => (
-                    <span
+                    <Link
+                        href={`/tag/${tag.name}`}
                         key={tag.id}
                         className={`${
                             select === tag.name
@@ -65,7 +67,7 @@ export default function Tags() {
                         onClick={() => setSelect(tag.name)}
                     >
                         {tag.name}
-                    </span>
+                    </Link>
                 ))}
             </div>
         </section>
