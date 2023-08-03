@@ -3,7 +3,7 @@ import Post from "@/components/Post";
 const getPosts = async (search) => {
     try {
         const response = await fetch(
-            `http://localhost:3000/api/search/${search}`,
+            `http://localhost:3000/api/post?search=${search}`,
             {
                 cache: "no-cache",
             }

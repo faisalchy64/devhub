@@ -2,9 +2,12 @@ import Post from "@/components/Post";
 
 const getPosts = async (tag) => {
     try {
-        const response = await fetch(`http://localhost:3000/api/tag/${tag}`, {
-            cache: "no-cache",
-        });
+        const response = await fetch(
+            `http://localhost:3000/api/post?tag=${tag}`,
+            {
+                cache: "no-cache",
+            }
+        );
 
         return response.json();
     } catch (error) {
